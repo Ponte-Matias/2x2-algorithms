@@ -1,14 +1,15 @@
 def invertir_alg(algoritmo):
     invertido = algoritmo.split(" ")
-    # Chequear si tiene una rotación del tipo y al principio (para no imprimirla)
+    # Limpiar de caracteres como espacios y ''
+    invertido = list(filter(None, invertido))
+    invertido = [x for x in invertido if x != ' ']
+    # Chequea si tiene una rotación del tipo y al principio (para no imprimirla)
+    #print(invertido)       # Para chequear errores descomentar, si, no soy un debugger xd
     if invertido[0][0] == 'y':
         invertido.pop(0)
     if invertido[1][0] == 'y':
         invertido.pop(1)
-
-    # Limpiar de caracteres como espacios y ''
-    invertido = list(filter(None, invertido))
-    invertido = [x for x in invertido if x != ' ']
+    
     # Invertir los moves (posicion)
     invertido = invertido[::-1]
 

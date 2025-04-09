@@ -1,0 +1,3 @@
+- IMPORTANTE: borrar las hojas que no sean de algoritmos: Home, PBL Angles, PBL, Copy of LS-4, etc, inclusive las ocultas (click derecho abajo, mostrar y luego borrar)
+
+- La hoja LEG-1 tiene un caracter del tipo "_" en la segunda columna, lo borre para evitar los errores
