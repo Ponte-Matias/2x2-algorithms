@@ -1,5 +1,6 @@
 from openpyxl import load_workbook
 import random
+from algoritmo_inversor import invertir_alg
 
 # Función que obtiene todas las celdas que ocupa verticalmente una combinación de celdas
 # (las que están en la primer fila e indican el subset)
@@ -123,3 +124,18 @@ vector_total = [x for x in vector_total if x != ' ']
 
 print(vector_total)
 print(len(vector_total))
+
+# Invertir todos los algoritmos, usando la funcion en el otro script
+invertido_total = []
+for algoritmo in vector_total:
+    invertido_total.append(invertir_alg(algoritmo))
+
+
+while True:
+    try:
+        numero = random.randint(0, len(invertido_total)-1)
+        print(invertido_total[numero])
+        espera = input("Presione enter para continuar, Ctrl + C para salir")
+    except KeyboardInterrupt:
+        print("\nSaliendo del programa...")
+        exit(0)
