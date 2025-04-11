@@ -122,7 +122,9 @@ if len(subsets_a_mostrar) != 0:
         st.session_state.alg_random = invertido_total[numero]
 
     # Mostrar el algoritmo seleccionado
-    st.write(st.session_state.alg_random)
+    st.subheader(st.session_state.alg_random)
+    st.markdown("---")  # Línea divisoria
+    loop_opcion = st.checkbox("Loop mode")
 
 # Aclaraciones y demás
 st.markdown("---")  # Línea divisoria
