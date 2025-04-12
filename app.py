@@ -3,8 +3,7 @@ from openpyxl import load_workbook
 import random
 from algoritmo_inversor import invertir_alg
 
-# Función que obtiene todas las celdas que ocupa verticalmente una combinación de celdas
-# (las que están en la primer fila e indican el subset)
+# Función que obtiene todas las celdas que ocupa verticalmente una combinación de celdas (las que están en la primer fila e indican el subset)
 def obtener_rango_combinado_y_valores(hoja, valor_buscado):
 
     rango_vertical = None
@@ -53,12 +52,14 @@ wb = cargar_workbook(archivo)
 
 st.title("2x2 Set-Up Algorithms")
 
-metodo = st.sidebar.selectbox("Method: ", wb.sheetnames)
+metodo = st.sidebar.selectbox("Method: ", wb.sheetnames)    # Metodos/hojas posibles
 # Escoger el método, acceder a la hoja correspondiente
 # Guardar la hoja si cambió el método
-if "metodo_actual" not in st.session_state or st.session_state.metodo_actual != metodo:
+cambio = 0      # Para verificar mas adelante
+if "metodo_actual" not in st.session_state or st.session_state.metodo_actual != metodo:     # Entra la primera vez y cuando se cambia de hoja
     st.session_state.metodo_actual = metodo
     st.session_state.hoja_actual = wb[metodo]
+    cambio = 1      # Si se cambia de método/hoja, esta este verificador
 
 # Usar la hoja desde session_state
 hoja = st.session_state.hoja_actual
@@ -77,57 +78,49 @@ for subset in subsets:
     if st.toggle(subset):
         subsets_a_mostrar.append(subset)
 
+if "subsets_a_mostrar" not in st.session_state:     # Inicializa el estado la primera vez
+    st.session_state.subsets_a_mostrar = subsets_a_mostrar
+
 # BLOQUE PRINCIPAL
-# Leer cada fila por separado, con el vector subsets
-if len(subsets_a_mostrar) != 0:  
-    vector_total = []
-    for fila in subsets_a_mostrar:
-        valores = obtener_rango_combinado_y_valores(hoja, fila)  # valores: lista con diccionarios
-        # total_casos obtiene todas las columnas en donde tiene algoritmos (tupla para no repetir las columnas)
-        total_casos = set({})   # Indica qué columnas tienen algs (la cantidad de casos del subset)
-        for dato in valores:
-            total_casos.add(dato['columna'])
-        # Pasarlo a lista y ordenarlo alfabeticamente
-        total_casos = list(total_casos)
-        total_casos.sort()
-
-        # Leer cada columna por separado, con el vector total_casos
-        for columna in total_casos:
-            # Quedarse con un solo algoritmo para un caso en especifico
-            algs_un_caso = []
+if len(subsets_a_mostrar) != 0:     # Por si esta vacio (al inicio mas que nada)
+    if st.session_state.subsets_a_mostrar != subsets_a_mostrar or cambio == 1:      # No recalcular todo si no se cambia de hoja o los subsets a mostrar
+        st.session_state.subsets_a_mostrar = subsets_a_mostrar      # Actualizar estado
+        # Leer cada fila por separado, con el vector subsets_a_mostrar
+        vector_total = []
+        for fila in subsets_a_mostrar:
+            valores = obtener_rango_combinado_y_valores(hoja, fila)  # valores: lista con diccionarios
+            # total_casos obtiene todas las columnas en donde tiene algoritmos (tupla para no repetir las columnas)
+            total_casos = set({})   # Indica qué columnas tienen algs (la cantidad de casos del subset)
             for dato in valores:
-                if dato['columna'] == columna:
-                    algs_un_caso.append(dato['algoritmo'])
-            numero = random.randint(0, len(algs_un_caso)-1)
-            vector_total.append(algs_un_caso[numero])
-    # Limpiar vector_total de caracteres nulos y espacios
-    vector_total = list(filter(None, vector_total))
-    vector_total = [x for x in vector_total if x != ' ']
+                total_casos.add(dato['columna'])
+            # Pasarlo a lista y ordenarlo alfabeticamente
+            total_casos = list(total_casos)
+            total_casos.sort()
 
-    # Filtrar los elementos que tienen contenido real, si hay algo vacio se va
-    vector_total = [x for x in vector_total if x.strip() != '']
+            # Leer cada columna por separado, con el vector total_casos
+            for columna in total_casos:
+                # Quedarse con un solo algoritmo para un caso en especifico
+                algs_un_caso = []
+                for dato in valores:
+                    if dato['columna'] == columna:
+                        algs_un_caso.append(dato['algoritmo'])
+                numero = random.randint(0, len(algs_un_caso)-1)
+                vector_total.append(algs_un_caso[numero])
+        # Limpiar vector_total de caracteres nulos y espacios
+        vector_total = list(filter(None, vector_total))
+        vector_total = [x for x in vector_total if x != ' ']
 
-    # Invertir todos los algoritmos, usando la funcion en el otro script
-    invertido_total = []
-    for algoritmo in vector_total:
-        invertido_total.append(invertir_alg(algoritmo))
-    st.write(invertido_total)
-    # Botón de LOOP (EN PRUEBA)    
-#    st.session_state.loop_opcion = st.checkbox("Loop mode", value=st.session_state.loop_opcion)
-#    loop_opcion = st.session_state.loop_opcion
-    # ME DI CUENTA QUE EL BOTON NEXT ALG REINICIA TODO EL SCRIPT, pero bueno, así es la naturaleza de streamlit, siemptre re-ejecuta
-#    if loop_opcion == False:
-#        numero = random.randint(0, len(invertido_total)-1)      # Escoger de forma random
-#    else:
-#        if "numero" not in st.session_state:
-#            st.session_state.numero = 0
-#            numero = st.session_state.numero
-#        st.session_state.numero += 1
-#        numero = st.session_state.numero
-    # PERO DE ESTA FORMA, SI CAMBIO DE METODO O AGREGO/QUITO SUBSETS NO FUNCIONARIA, EL NUMERO GUARDARIA SU ESTADO A PESAR DE
-    # CUALQUIER SITUACION, ADEMAS SI QUITO SUBSETS, SI NUMERO>LEN(INVERTIDO_TOTAL) --> ERROR
-    # FINALIZA LA PRUEBA DE LOOP
+        # Filtrar los elementos que tienen contenido real, si hay algo vacio se va
+        vector_total = [x for x in vector_total if x.strip() != '']
 
+        # Invertir todos los algoritmos, usando la funcion en el otro script
+        invertido_total = []
+        for algoritmo in vector_total:
+            invertido_total.append(invertir_alg(algoritmo))
+        st.session_state.invertido_total = invertido_total      # Guardar estado
+    
+    invertido_total = st.session_state.invertido_total          # Cargar estado para cuando no se recalcula (cuando no se entra en el if)
+    
     numero = random.randint(0, len(invertido_total)-1)
     # Inicializar la variable en la sesión si no existe
     if "alg_random" not in st.session_state:
@@ -146,7 +139,9 @@ st.markdown(
     """
     **Notes**:
     - This does not generate any algorithm, it just takes the ones shown in this [drive](https://docs.google.com/spreadsheets/d/1OFXakCV85Mp2zsQBXMxiMX9a506JeAcLnUXZr8FgXAY/) and then reverse them.
-    - If you do not press the Next alg button, the algorithm shown is not going to change, even if you change the method.
+    - If you do not press the Next alg button, the shown algorithm is not going to change, even if you change the method.
+    
+    **Tip**: if you are in PC, you can click Next alg and then press the enter key or the space bar to continue changing the algs.
     """,
     unsafe_allow_html=True
 )
