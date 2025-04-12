@@ -3,3 +3,7 @@
 - La hoja LEG-1 tiene un caracter del tipo "_" en la segunda columna, lo borre para evitar los errores
 
 - En algoritmo_inversor.py se tuvo en cuenta cuando hay moves dobles e inversos, ej: R2'
+
+- IMPORTANTE: Me di cuenta que el boton next alg reinicia todo el script, pero bueno, así es la naturaleza de streamlit, siemptre re-ejecuta, pero de esta forma, si cambio de metodo o agrego/quito subsets no funcionaria, el numero guardaria su estado a pesar de, cualquier situacion, ademas si quito subsets, si numero>len(invertido_total) --> Error
+
+- Como consecuencia del punto anterior, el vector de algoritmos va a cambiar cada vez que se apreta Next alg, por lo tanto es muy probable que para el mismo caso, se vayan cambiando los algoritmos de setup
