@@ -79,7 +79,7 @@ for subset in subsets:
 
 # BLOQUE PRINCIPAL
 # Leer cada fila por separado, con el vector subsets
-if len(subsets_a_mostrar) != 0:
+if len(subsets_a_mostrar) != 0:  
     vector_total = []
     for fila in subsets_a_mostrar:
         valores = obtener_rango_combinado_y_valores(hoja, fila)  # valores: lista con diccionarios
@@ -111,6 +111,22 @@ if len(subsets_a_mostrar) != 0:
     invertido_total = []
     for algoritmo in vector_total:
         invertido_total.append(invertir_alg(algoritmo))
+    st.write(invertido_total)
+    # Botón de LOOP (EN PRUEBA)    
+#    st.session_state.loop_opcion = st.checkbox("Loop mode", value=st.session_state.loop_opcion)
+#    loop_opcion = st.session_state.loop_opcion
+    # ME DI CUENTA QUE EL BOTON NEXT ALG REINICIA TODO EL SCRIPT, pero bueno, así es la naturaleza de streamlit, siemptre re-ejecuta
+#    if loop_opcion == False:
+#        numero = random.randint(0, len(invertido_total)-1)      # Escoger de forma random
+#    else:
+#        if "numero" not in st.session_state:
+#            st.session_state.numero = 0
+#            numero = st.session_state.numero
+#        st.session_state.numero += 1
+#        numero = st.session_state.numero
+    # PERO DE ESTA FORMA, SI CAMBIO DE METODO O AGREGO/QUITO SUBSETS NO FUNCIONARIA, EL NUMERO GUARDARIA SU ESTADO A PESAR DE
+    # CUALQUIER SITUACION, ADEMAS SI QUITO SUBSETS, SI NUMERO>LEN(INVERTIDO_TOTAL) --> ERROR
+    # FINALIZA LA PRUEBA DE LOOP
 
     numero = random.randint(0, len(invertido_total)-1)
     # Inicializar la variable en la sesión si no existe
@@ -123,8 +139,6 @@ if len(subsets_a_mostrar) != 0:
 
     # Mostrar el algoritmo seleccionado
     st.subheader(st.session_state.alg_random)
-    st.markdown("---")  # Línea divisoria
-    loop_opcion = st.checkbox("Loop mode")
 
 # Aclaraciones y demás
 st.markdown("---")  # Línea divisoria
