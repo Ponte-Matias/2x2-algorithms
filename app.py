@@ -50,7 +50,8 @@ archivo = "algs.xlsx"
 # Usar el workbook cargado
 wb = cargar_workbook(archivo)
 
-st.title("2x2 Set-Up Algorithms")
+st.title("2x2 Set-Up Algorithms")   # Titulo
+st.markdown("---")  # Línea divisoria
 
 metodo = st.sidebar.selectbox("Method: ", wb.sheetnames)    # Metodos/hojas posibles
 # Escoger el método, acceder a la hoja correspondiente
