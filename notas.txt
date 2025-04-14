@@ -1,0 +1,9 @@
+- IMPORTANTE: borrar las hojas que no sean de algoritmos: Home, PBL Angles, PBL, Copy of LS-4, etc, inclusive las ocultas (click derecho abajo, mostrar y luego borrar)
+
+- La hoja LEG-1 tiene un caracter del tipo "_" en la segunda columna, lo borre para evitar los errores
+
+- En algoritmo_inversor.py se tuvo en cuenta cuando hay moves dobles e inversos, ej: R2'
+
+- IMPORTANTE: Me di cuenta que el boton next alg reinicia todo el script, pero bueno, así es la naturaleza de streamlit, siemptre re-ejecuta, pero de esta forma, si cambio de metodo o agrego/quito subsets no funcionaria, el numero guardaria su estado a pesar de, cualquier situacion, ademas si quito subsets, si numero>len(invertido_total) --> Error
+
+- Se logró que si no se cambian los subsets a mostrar o la hoja, no se recalcularán los algs a practicar

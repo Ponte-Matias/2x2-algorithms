@@ -1,5 +1,6 @@
 from openpyxl import load_workbook
 import random
+from algoritmo_inversor import invertir_alg
 
 # Función que obtiene todas las celdas que ocupa verticalmente una combinación de celdas
 # (las que están en la primer fila e indican el subset)
@@ -23,7 +24,7 @@ def obtener_rango_combinado_y_valores(hoja, valor_buscado):
     start_row = hoja[start_cell].row
     end_row = hoja[end_cell].row
 
-    print(f"'{valor_buscado}' ocupa de {start_cell} a {end_cell} (filas {start_row} a {end_row})")
+    #print(f"'{valor_buscado}' ocupa de {start_cell} a {end_cell} (filas {start_row} a {end_row})")
 
     # Paso 3: Recorrer columnas B en adelante, en esas filas
     datos = []
@@ -47,7 +48,7 @@ archivo = "algs.xlsx"
 wb = load_workbook(archivo, data_only=True)
 
 # Escoger el método
-# IMPORTANTE: borrar las hojas que no sean de algoritmos: Home, PBL Angles, Copy of LS-4, etc
+# IMPORTANTE: borrar las hojas que no sean de algoritmos: Home, PBL Angles, PBL, Copy of LS-4, etc
 # Inclusive las ocultas (click derecho abajo, mostrar y luego borrar)
 i=1
 for elemento in wb.sheetnames:
@@ -66,33 +67,13 @@ subsets = []    # Lista con los posibles subsets del metodo
 for fila in hoja.iter_rows(min_col=1, max_col=1):
     celda = fila[0]
     if celda.value is not None:
-        print(celda.value)
+        #print(celda.value)
         subsets.append(celda.value) 
 
-print("---------------")
+#print("---------------")
 subsets.pop(0)  # Elimino el elemento que contiene el nombre del método
-print(subsets)
-""" Esto se puede borrar si no me equivoco, 99% seguro
-elemento = subsets[1]   # Hammer en este caso
+#print(subsets)
 
-valores = obtener_rango_combinado_y_valores(hoja, elemento)  # valores: lista con diccionarios
-
-# Imprime la tabla
-for dato in valores:
-    print(f"Fila {dato['fila']} | Columna {dato['columna']} | Algoritmo: {dato['algoritmo']}")
-
-print("---------------")
-print(valores)
-
-# Esto obtiene todas las columnas en donde tiene algoritmos (tupla para no repetir las columnas)
-total_casos = set({})   # Indica qué columnas tienen algs (la cantidad de casos del subset)
-for dato in valores:
-    total_casos.add(dato['columna'])
-# Pasarlo a lista y ordenarlo alfabeticamente
-total_casos = list(total_casos)
-total_casos.sort()
-print(total_casos)
-"""
 # BLOQUE PRINCIPAL
 # Leer cada fila por separado, con el vector subsets
 vector_total = []
@@ -121,5 +102,25 @@ for fila in subsets:
 vector_total = list(filter(None, vector_total))
 vector_total = [x for x in vector_total if x != ' ']
 
-print(vector_total)
-print(len(vector_total))
+#print(vector_total)
+#print(len(vector_total))
+
+# Filtrar los elementos que tienen contenido real, si hay algo vacio se va
+vector_total = [x for x in vector_total if x.strip() != '']
+
+#print(vector_total)
+#print(len(vector_total))
+
+# Invertir todos los algoritmos, usando la funcion en el otro script
+invertido_total = []
+for algoritmo in vector_total:
+    invertido_total.append(invertir_alg(algoritmo))
+    
+while True:
+    try:
+        numero = random.randint(0, len(invertido_total)-1)
+        print(invertido_total[numero])
+        espera = input("Presione enter para continuar, Ctrl + C para salir ")
+    except KeyboardInterrupt:
+        print("\nSaliendo del programa...")
+        exit(0)

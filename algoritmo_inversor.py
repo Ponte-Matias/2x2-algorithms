@@ -1,26 +1,25 @@
-# obtenemos el alg
-alg=input("Ingrese el algoritmo a invertir: ")
-#alg="R U' L2 F D B' R2"
-# invertimos
-inv=alg.split(" ")
-cadena=inv[::-1]
+def invertir_alg(algoritmo):
+    invertido = algoritmo.split(" ")
+    # Limpiar de caracteres como espacios y ''
+    invertido = list(filter(None, invertido))
+    invertido = [x for x in invertido if x != ' ']
+    # Chequea si tiene una rotación del tipo y al principio (para no imprimirla)
+    if invertido[0][0] == 'y':
+        invertido.pop(0)
+    if invertido[1][0] == 'y':
+        invertido.pop(1)
+    
+    # Invertir los moves (posicion)
+    invertido = invertido[::-1]
 
-rta=""
-for i in range(0,len(cadena)):
-    if len(cadena[i])==1:
-        rta=rta+cadena[i]+"' "
-    elif cadena[i][1]=="w":
-        print("Big cubes bruh")
+    # Invertir movimientos (la notación)
+    final=""
+    for move in invertido:
+        if len(move) == 1:
+            final = final + move+"' "
+        elif move[1] == "'":
+            final = final + move[0] + " "
+        elif move[1] == "2":
+            final = final + move[0:2] + " "     # No pongo move completo porque a veces usan R2' por ejemplo, de esta forma evito el '
 
-#    elif cadena[i][1]=="+" or cadena[i][1]=="-":
-#        print("Megaminx bruh")      
-    elif cadena[i][len(cadena[i])-1]=="'":
-        rta=rta+cadena[i][0]+" "    
-
-    elif cadena[i][len(cadena[i])-1]=="2":
-        rta=rta+cadena[i]+" "
-
-
-# imprimir el algoritmo invertido
-print("Algoritmo invertido:")
-print(rta)
+    return final
