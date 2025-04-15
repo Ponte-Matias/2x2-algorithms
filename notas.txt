@@ -7,3 +7,5 @@
 - IMPORTANTE: Me di cuenta que el boton next alg reinicia todo el script, pero bueno, así es la naturaleza de streamlit, siemptre re-ejecuta, pero de esta forma, si cambio de metodo o agrego/quito subsets no funcionaria, el numero guardaria su estado a pesar de, cualquier situacion, ademas si quito subsets, si numero>len(invertido_total) --> Error
 
 - Se logró que si no se cambian los subsets a mostrar o la hoja, no se recalcularán los algs a practicar
+
+- LOOP: Logré que se reinicie el loop al marcar nuevos subsets pero bueno

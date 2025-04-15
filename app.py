@@ -72,20 +72,26 @@ for fila in hoja.iter_rows(min_col=1, max_col=1):
     if celda.value is not None:
         subsets.append(celda.value) 
 
-#print("---------------")
 subsets.pop(0)  # Elimino el elemento que contiene el nombre del método
 subsets_a_mostrar = []
 for subset in subsets:
     if st.toggle(subset):
         subsets_a_mostrar.append(subset)
 
+# Botón de loop
+loop_opcion = st.checkbox("Loop mode")
+if "loop_opcion" not in st.session_state:
+    st.session_state.loop_opcion = loop_opcion      # Para chequear más adelante si es tildado luego de estar destildado
+
 if "subsets_a_mostrar" not in st.session_state:     # Inicializa el estado la primera vez
     st.session_state.subsets_a_mostrar = subsets_a_mostrar
 
 # BLOQUE PRINCIPAL
+recalcular_todo = 0         # Verificador para el boton de loop
 if len(subsets_a_mostrar) != 0:     # Por si esta vacio (al inicio mas que nada)
     if st.session_state.subsets_a_mostrar != subsets_a_mostrar or cambio == 1:      # No recalcular todo si no se cambia de hoja o los subsets a mostrar
         st.session_state.subsets_a_mostrar = subsets_a_mostrar      # Actualizar estado
+        recalcular_todo = 1         # Verificador para el boton de loop
         # Leer cada fila por separado, con el vector subsets_a_mostrar
         vector_total = []
         for fila in subsets_a_mostrar:
@@ -122,7 +128,25 @@ if len(subsets_a_mostrar) != 0:     # Por si esta vacio (al inicio mas que nada)
     
     invertido_total = st.session_state.invertido_total          # Cargar estado para cuando no se recalcula (cuando no se entra en el if)
     
-    numero = random.randint(0, len(invertido_total)-1)
+    # Lógica de loop y random
+    if loop_opcion == False:
+        numero = random.randint(0, len(invertido_total)-1)
+    else:
+        # Inicializar la primera vez que se usa el boton de loop o si se recalcula todo se reinicia o si se llega al ultimo alg luego se reinicia o si se tilda el boton loop luego de estar destildado
+        if "numero" not in st.session_state or recalcular_todo == 1:
+            st.session_state.numero = -1        # Para que en la siguiente iteracion (al apretar Next alg) se vaya a 0
+            numero = st.session_state.numero
+        elif st.session_state.numero == len(invertido_total)-1:
+            st.session_state.numero = 0        
+            numero = st.session_state.numero
+        elif st.session_state.loop_opcion != loop_opcion:
+            st.session_state.loop_opcion = loop_opcion
+            st.session_state.numero = 0        
+            numero = st.session_state.numero
+        else:
+            st.session_state.numero += 1
+            numero = st.session_state.numero
+
     # Inicializar la variable en la sesión si no existe
     if "alg_random" not in st.session_state:
         st.session_state.alg_random = invertido_total[numero]
@@ -141,8 +165,10 @@ st.markdown(
     **Notes**:
     - This does not generate any algorithm, it just takes the ones shown in this [drive](https://docs.google.com/spreadsheets/d/1OFXakCV85Mp2zsQBXMxiMX9a506JeAcLnUXZr8FgXAY/) and then reverse them.
     - If you do not press the Next alg button, the shown algorithm is not going to change, even if you change the method.
-    
+    - When in loop mode, you would reset the loop if you add or delete a subset
     **Tip**: if you are in PC, you can click Next alg and then press the enter key or the space bar to continue changing the algs.
+    
+    Found any bug? Contact me: [mail](matiasponte20@gmail.com)
     """,
     unsafe_allow_html=True
 )

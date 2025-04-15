@@ -17,7 +17,7 @@ def invertir_alg(algoritmo):
     for move in invertido:
         if len(move) == 1:
             final = final + move+"' "
-        elif move[1] == "'":
+        elif move[1] == "'" or move[1] == "’":      # A veces se usa ' y a veces ’
             final = final + move[0] + " "
         elif move[1] == "2":
             final = final + move[0:2] + " "     # No pongo move completo porque a veces usan R2' por ejemplo, de esta forma evito el '
