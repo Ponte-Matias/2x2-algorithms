@@ -19,3 +19,6 @@ streamlit run your_script.py
 ```
 If it works, you can go to the streamlit website and upload it by creating a repository in your GitHub account and then link it to streamlit. 
 PD: you'll also need the proper requirements.txt (if corresponded).
+
+## Contribute
+If you want to contribute, please read [Contribute](contribuir.md)
