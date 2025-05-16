@@ -2,3 +2,5 @@ entorno_virtual
 .~lock.algs.xlsx#
 super_programa.txt
 __pycache__/
+
+actions-runner/
