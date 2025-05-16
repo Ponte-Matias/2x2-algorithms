@@ -14,6 +14,12 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
+    - name: Notify on Discord
+      uses: Ilshidur/action-discord@master
+      with:
+        args: "🚀 FastAPI desplegado en servidor local tras merge en develop."
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
 #    - name: Stop existing container
 #      run: docker compose down || true
 
@@ -25,7 +31,8 @@ jobs:
 #      with:
 #        webhook: ${{ secrets.DISCORD_WEBHOOK }}
 #        message: "🚀 FastAPI desplegado en servidor local tras merge en develop."
-    - name: Notify on Discord
-      uses: Ilshidur/action-discord@master
-      with:
-        args: "🚀 FastAPI desplegado en servidor local tras merge en develop."
+#    - name: Notify on Discord
+#      uses: Ilshidur/action-discord@master
+#      with:
+#        args: "🚀 FastAPI desplegado en servidor local tras merge en develop."
+
