@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - develop
 
 jobs:
   deploy:
@@ -11,17 +12,28 @@ jobs:
     runs-on: self-hosted
 
     steps:
-#    - name: Checkout code
-#      uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-#    - name: Stop existing container
-#      run: docker compose down || true
+#    - name: Notify on Discord
+#      uses: Ilshidur/action-discord@master
+#      with:
+#        args: "🚀 FastAPI desplegado en servidor local tras merge en develop."
+#      env:
+#        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
 
-#    - name: Build and run new container
-#      run: docker compose up -d --build
+    - name: Get list of changed files
+      id: changes
+      run: |
+        echo "BRANCH_NAME=$(echo $GITHUB_REF | sed 's|refs/heads/||')" >> $GITHUB_OUTPUT
+        echo "FILES_CHANGED=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | paste -sd ',' -)" >> $GITHUB_OUTPUT
 
     - name: Notify on Discord
       uses: Ilshidur/action-discord@master
       with:
-        webhook: ${{ secrets.DISCORD_WEBHOOK }}
-        message: "🚀 FastAPI desplegado en servidor local tras merge en develop."
+        args: |
+          🚀 FastAPI desplegado en servidor local.
+          🧾 Archivos modificados: ${{ steps.changes.outputs.FILES_CHANGED }}
+          🌿 Rama: ${{ steps.changes.outputs.BRANCH_NAME }}
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
