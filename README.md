@@ -21,6 +21,4 @@ If it works, you can go to the streamlit website and upload it by creating a rep
 PD: you'll also need the proper requirements.txt (if corresponded).
 
 ## Contribute
-If you want to contribute, please read [Contribute](contribuir.md)
-
-Cambio 2
+If you want to contribute, please read [Contribute](contribuir.md) (in spanish)
