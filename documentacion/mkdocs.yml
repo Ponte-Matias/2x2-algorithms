@@ -1,0 +1,6 @@
+site_name: Pagina Web - Documentacion
+nav:
+  - Home: index.md
+  - How to run: info.md
+  - License: licencia.md
+  - Contribution: contribuir.md
